@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Preview</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      key="font-import"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap&family=Lobster"
+    />
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+      }
+      .content {
+        width: 100%;
+        align-self: flex-start;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body class="overflow-x-hidden overflow-y-auto">
+    <div class="mx-auto bg-white">
+      <article class="overflow-hidden">
+        <div class="bg-[white] rounded-b-md">
+          <div class="p-9">
+            <div class="space-y-6 text-slate-700">
+              <p class="text-xl font-extrabold tracking-tight uppercase font-body">
+                Transactional
+              </p>
+            </div>
+          </div>
+          <div class="p-9">
+            <div class="flex w-full">
+              <div class="grid grid-cols-4 gap-12">
+                <div class="text-sm font-light text-slate-500">
+                  <p class="text-sm font-normal text-slate-700">
+                    Invoice Detail:
+                  </p>
+                  <p>{{.FromCompany.Name}}</p>
+                  <p>{{.FromCompany.Street}}</p>
+                  <p>{{.FromCompany.City}}, {{.FromCompany.Country}}</p>
+                  <p>{{.FromCompany.Zip}}</p>
+                </div>
+                <div class="text-sm font-light text-slate-500">
+                  <p class="text-sm font-normal text-slate-700">Billed To</p>
+                  <p>{{.ToCompany.Name}}</p>
+                  <p>{{.ToCompany.Street}}</p>
+                  <p>{{.ToCompany.City}}, {{.ToCompany.Country}}</p>
+                  <p>{{.ToCompany.Zip}}</p>
+                </div>
+                <div class="text-sm font-light text-slate-500">
+                  <p class="text-sm font-normal text-slate-700">Invoice Number</p>
+                  <p>{{.InvoiceNumber}}</p>
+                  <p class="mt-2 text-sm font-normal text-slate-700">Date of Issue</p>
+                  <p>{{.IssueDate}}</p>
+                </div>
+                <div class="text-sm font-light text-slate-500">
+                  <p class="text-sm font-normal text-slate-700">Due</p>
+                  <p>{{.DueDate}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-9">
+            <div class="flex flex-col mx-0 mt-8">
+              <table class="min-w-full divide-y divide-slate-500">
+                <thead>
+                  <tr>
+                    <th
+                      scope="col"
+                      class="py-3.5 pl-4 pr-3 text-left text-sm font-normal text-slate-700 sm:pl-6 md:pl-0"
+                    >
+                      Description
+                    </th>
+                    <th
+                      scope="col"
+                      class="hidden py-3.5 px-3 text-right text-sm font-normal text-slate-700 sm:table-cell"
+                    >
+                      Quantity
+                    </th>
+                    <th
+                      scope="col"
+                      class="hidden py-3.5 px-3 text-right text-sm font-normal text-slate-700 sm:table-cell"
+                    >
+                      Taxes
+                    </th>
+                    <th
+                      scope="col"
+                      class="py-3.5 pl-3 pr-4 text-right text-sm font-normal text-slate-700 sm:pr-6 md:pr-0"
+                    >
+                      Amount
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{range .Items}}
+                    <tr class="border-b border-slate-200">
+                      <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
+                        <div class="font-medium text-slate-700">{{.Name}}</div>
+                      </td>
+                      <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
+                        {{.Quantity}}
+                      </td>
+                      <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
+                        {{.Taxes}}
+                      </td>
+                      <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                        {{.Price}}
+                      </td>
+                    </tr>
+                  {{end}}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th scope="row" colspan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
+                      Subtotal
+                    </th>
+                    <th scope="row" class="pt-6 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden">
+                      Subtotal
+                    </th>
+                    <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                      {{.Prices.Subtotal}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" colspan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
+                      Discount
+                    </th>
+                    <th scope="row" class="pt-6 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden">
+                      Discount
+                    </th>
+                    <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                      {{.Prices.Discount}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
+                      Tax
+                    </th>
+                    <th scope="row" class="pt-4 pl-4 pr-3 text-sm font-light text-left text-slate-500 sm:hidden">
+                      Tax
+                    </th>
+                    <td class="pt-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                      {{.Prices.Taxes}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" colspan="3" class="hidden pt-4 pl-6 pr-3 text-sm font-normal text-right text-slate-700 sm:table-cell md:pl-0">
+                      Total
+                    </th>
+                    <th scope="row" class="pt-4 pl-4 pr-3 text-sm font-normal text-left text-slate-700 sm:hidden">
+                      Total
+                    </th>
+                    <td class="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
+                      {{.Prices.Total}}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          {{if .ShowTerms}}
+            <div class="mt-48 p-9">
+              <div class="border-t pt-9 border-slate-200">
+                <div class="text-sm font-light text-slate-700">
+                  <p>
+                    Payment terms set by Transactional are 14 days. It is
+                    crucial to understand that pursuant to the Settlement of
+                    Late Payments for Unsecured Debts Act 0000, independent
+                    contractors have the right to take action in the event of
+                    non-payment after this period. An updated invoice will be
+                    issued if the payment is not received within an additional
+                    14 days. Subsequently, if the payment for the revised
+                    invoice is not made within another 14 days, further interest
+                    will be applied to the overdue amount at a statutory rate of
+                    8%. It is not possible for parties to circumvent the
+                    provisions of this legislation.
+                  </p>
+                </div>
+              </div>
+            </div>
+          {{end}}
+        </div>
+      </article>
+    </div>
+  </body>
+</html>
